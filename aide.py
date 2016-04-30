@@ -268,7 +268,7 @@ class MyApp(ShowBase):
         elif len(self.mouvementPossible(self.tableau)) is not 0:
             
             var = self.mouvementPossible(self.tableau)[randrange(len(self.mouvementPossible(self.tableau)))]
-            if var == 0:
+            if var == 0:unujb nub
                 self.addCercle0()
             elif var == 1:
                 self.addCercle1()
