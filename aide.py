@@ -124,9 +124,11 @@ class MyApp(ShowBase):
         self.Musiquemenu = self.loader.loadMusic("Lugias Song.wav")
         self.Musiquemenu.setLoop(True)
         self.Musiquemenu.play()
+
         self.buttonson=self.loader.loadSfx("playbutton.mp3")
         self.rollsound=self.loader.loadSfx("rollbutton.mp3")
         self.resetsound=self.loader.loadSfx("resetbutton.mp3")
+        self.Chargerboutons()
         self.menu()
 
         self.accept('1',lambda : self.ajouterCercle(0))
@@ -143,7 +145,15 @@ class MyApp(ShowBase):
         self.accept('d',self.dechargerGraphismes)
         self.accept('c',self.chargerGraphismes)
 
-
+    def Chargerboutons(self):
+        self.b4= DirectButton(text =("Settings"),scale=0.2,text_scale=(0.6,0.6), pos = (-0.95,0,0.80),command=self.dechargerjeupouroptions)
+        self.b3= DirectButton(text = ("Reset", "click!", "Reset", "disabled"), scale=.18, pos = (0.95,0,0.80), command = self.reset,clickSound=self.resetsound)    #def Volume(self):
+        self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourgraph),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
+        self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions)
+        self.b.hide()
+        self.b2.hide()
+        self.b3.hide()
+        self.b4.hide()
     def chargerGraphismes(self):
         for i in range(9):#création des 9 tours
             self.tours[i] = self.loader.loadModel("bois")
@@ -153,14 +163,17 @@ class MyApp(ShowBase):
             self.tours[i].setPos(position(i))
             self.Musiquegame.play()
             self.Musiquemenu.stop()
-            self.b4= DirectButton(text =("Settings"),scale=0.2,text_scale=(0.6,0.6), pos = (-0.95,0,0.80))
-            self.b3= DirectButton(text = ("Reset", "click!", "Reset", "disabled"), scale=.18, pos = (0.95,0,0.80), command = self.reset,clickSound=self.resetsound)
+            self.b3.show()
+            self.b4.show()
+
     def dechargerGraphismes(self):
         """Efface tous les tours présente et les pions"""
         for tour in self.tours:
             if tour is not None:
                 tour.detachNode()
         self.reset()
+        self.b3.hide()
+        self.b4.hide()
 
     def reset(self):
         for i in range(9):
@@ -201,9 +214,11 @@ class MyApp(ShowBase):
 
 
     def menu(self):
-        self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourgraph),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
-        self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions)
-
+        self.b.show()
+        self.b2.show()
+        self.Musiquemenu.play()
+        self.Musiquegame.stop()
+        self.Musiquewin.stop()
     def dechargermenupourgraph(self):
         self.b.hide()
         self.b2.hide()
@@ -215,16 +230,31 @@ class MyApp(ShowBase):
         self.Option()
         self.Musiquemenu.stop()
 
+    def dechargerjeupouroptions(self):
+        self.dechargerGraphismes()
+        self.Option()
+
+    def dechargeroptionspourjeu(self):
+        self.dechargeroptions()
+        self.chargerGraphismes()
+
+    def dechargeroptionspourmenu(self):
+        self.dechargeroptions()
+        self.menu()
+    def dechargeroptions(self):
+        self.slider.hide()
+        self.labelvolume.hide()
+        self.retourjeu.hide()
+        self.retourmenu.hide()
     def Option(self):
-        self.dechargermenupouroptions
         self.slider = DirectSlider(range=(0,1), value=0.5, pageSize=0.5,scale=0.4,pos=(0.65,0,0.75)) #PB 1 FAIRE SORTIR VALEUR DANS OPTION
-        self.labelvolume = DirectLabel(text="Volume",scale=0.5,pos=(-0.65,0,0.75),text_scale=(0.4,0.6))
+        self.labelvolume = DirectLabel(text=("Volume"),scale=0.5,pos=(-0.65,0,0.75),text_scale=(0.4,0.6))
+        self.retourjeu= DirectButton(text=("Resume"),scale=0.5,pos=(-0.65,0,0.15),text_scale=(0.4,0.6),command= (self.dechargeroptionspourjeu))
+        self.retourmenu= DirectButton(text=("Menu"),scale=0.5,pos=(0.65,0,0.15),text_scale=(0.4,0.6),command=(self.dechargeroptionspourmenu))
     def Volumelol(self):
         print self.slider['value']
 
 
-    #def Volume(self):
-        #if
 
 
 
