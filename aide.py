@@ -122,14 +122,14 @@ class MyApp(ShowBase):
         self.accept('f',self.son.disableaudio)
 
     def Chargerboutons(self):
-        self.b4= DirectButton(text =("Settings"),scale=0.2,text_scale=(0.6,0.6), pos = (-0.95,0,0.80),command=self.dechargerjeupouroptions)
+        self.b4= DirectButton(text =("Settings"),scale=0.2,text_scale=(0.6,0.6), pos = (-0.95,0,0.80),command=self.dechargerjeupouroptions,clickSound=(self.buttonson))
         self.b3= DirectButton(text = ("Reset", "click!", "Reset", "disabled"), scale=.18, pos = (0.95,0,0.80), command = self.reset,clickSound=self.resetsound)    #def Volume(self):
         self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourmenu2),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
         
-        self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions)
-        self.b5 = DirectButton(text= ("IA Facile"), text_scale=(0.1,0.2),pos=(0,0,0.75),command=self.dechargermenu2pourgraph)
-        self.b6 = DirectButton(text= ("IA Intermediaire"), text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenu2pourgraph)
-        self.b7 = DirectButton(text= ("IA Difficile"), text_scale=(0.1,0.2),pos=(0,0,-0.75),command=self.dechargermenu2pourgraph)
+        self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions,clickSound=(self.buttonson))
+        self.b5 = DirectButton(text= ("IA Facile"), text_scale=(0.1,0.2),pos=(0,0,0.75),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
+        self.b6 = DirectButton(text= ("IA Intermediaire"), text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
+        self.b7 = DirectButton(text= ("IA Difficile"), text_scale=(0.1,0.2),pos=(0,0,-0.75),command=self.dechargermenu2pourgraph,clickSound=(self.buttonson))
         self.b.hide()
         self.b5.hide()
         self.b2.hide()
@@ -164,7 +164,7 @@ class MyApp(ShowBase):
                 self.environ[i].detachNode()
             self.tableau[i//3][i%3] = 0
         self.tourBlanc = True
-        self.son.Musiquegame.play()
+        self.son.LancerMusiquegame()
         self.son.Musiquewin.stop()
 
     def mouvementPossible(self, table):
@@ -213,8 +213,7 @@ class MyApp(ShowBase):
         self.b.hide()
         self.b2.hide()
         self.Option()
-        self.son.Musiquemenu.stop()
-
+       
     def dechargermenu2pourgraph(self):
     	self.b5.hide()
     	self.b6.hide()
@@ -226,10 +225,13 @@ class MyApp(ShowBase):
         self.dechargerGraphismes()
         self.Option()
         self.son.Musiquegame.stop()
+        self.son.LancerMusiquemenu()
+
 
     def dechargeroptionspourjeu(self):
         self.dechargeroptions()
         self.chargerGraphismes()
+        self.son.Musiquemenu.stop()
 
     def dechargeroptionspourmenu(self):
         self.dechargeroptions()
@@ -255,16 +257,20 @@ class MyApp(ShowBase):
 			self.buttonson.setVolume(0) 
 			self.rollsound.setVolume(0)
 			self.resetsound.setVolume(0)
+			
+
 		else :
 			self.buttonson.setVolume(1) 
 			self.rollsound.setVolume(1)
 			self.resetsound.setVolume(1)
+			
+			
 
     def Option(self):
         self.slider = DirectSlider(range=(0,1), value=0.5, pageSize=0.5,scale=0.4,pos=(0.65,0,0.75),command=(self.showValue)) #PB 1 FAIRE SORTIR VALEUR DANS OPTION
         self.labelvolume = DirectLabel(text=("Volume"),scale=0.5,pos=(-0.65,0,0.75),text_scale=(0.4,0.6))
-        self.retourjeu= DirectButton(text=("Resume"),scale=0.5,pos=(-0.65,0,-0.90),text_scale=(0.4,0.6),command= (self.dechargeroptionspourjeu))
-        self.retourmenu= DirectButton(text=("Menu"),scale=0.5,pos=(0.65,0,-0.90),text_scale=(0.4,0.6),command=(self.dechargeroptionspourmenu))
+        self.retourjeu= DirectButton(text=("Resume"),scale=0.5,pos=(-0.65,0,-0.90),text_scale=(0.4,0.6),command= (self.dechargeroptionspourjeu),clickSound=(self.buttonson))
+        self.retourmenu= DirectButton(text=("Menu"),scale=0.5,pos=(0.65,0,-0.90),text_scale=(0.4,0.6),command=(self.dechargeroptionspourmenu),clickSound=(self.buttonson))
         self.disablesfx=DirectCheckButton(text=("Disable Sound Effects"),text_scale=(0.4,0.6),scale=0.3,pos=(0,0,0.15),command=self.disablefx)
 
     def menu2(self):
@@ -298,9 +304,11 @@ class AudioManager():
 			self.Musiquegame.stop()
     
 	def LancerMusiquemenu(self):
-		if self.Musiquemenu != self.Musiquemenu.PLAYING:
+		if self.Musiquemenu.status() != self.Musiquemenu.PLAYING:
 			self.Musiquemenu.play()
-
+	def LancerMusiquegame(self):
+		if self.Musiquegame.status() != self.Musiquegame.PLAYING:
+			self.Musiquegame.play()
 
 	def disableaudio(self):
 		self.disableAllAudio()
