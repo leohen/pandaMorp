@@ -43,68 +43,52 @@ class MyApp(ShowBase):
 
     def testVictoire(self, Liste):
         if Liste[0][0] + Liste [0][1] + Liste [0][2] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][0] + Liste [0][1] + Liste [0][2] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[1][0] + Liste [1][1] + Liste [1][2] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[2][0] + Liste [2][1] + Liste [2][2] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][0] + Liste [1][0] + Liste [2][0] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][1] + Liste [1][1] + Liste [2][1] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][2] + Liste [1][2] + Liste [2][2] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][0] + Liste [1][1] + Liste [2][2] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 30:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return 1
         elif Liste[0][2] + Liste [1][1] + Liste [2][0] == 3:
-            self.Musiquegame.stop()
-            self.Musiquewin.play()
+            self.son.LancerMusiquevictoire()
             return -1
         else:
             return 0
@@ -117,20 +101,11 @@ class MyApp(ShowBase):
         self.tours = [None for i in range(9)]
         self.environ = [None for i in range(9)]
         self.tourBlanc = True
+        self.son = AudioManager(self.loader)
         self.IA = IA(self.testVictoire, self.mouvementPossible)
-        self.Musiquewin = self.loader.loadMusic("Epic_sax_guy_10_hours.wav")
-        self.Musiquegame = self.loader.loadMusic("Elevator_Music.wav")
-        self.Musiquegame.setLoop(True)
-        self.Musiquemenu = self.loader.loadMusic("Lugias Song.wav")
-        self.Musiquemenu.setLoop(True)
-        self.Musiquemenu.play()
-
-        self.buttonson=self.loader.loadSfx("playbutton.mp3")
-        self.rollsound=self.loader.loadSfx("rollbutton.mp3")
-        self.resetsound=self.loader.loadSfx("resetbutton.mp3")
+        self.chargersfx()
         self.Chargerboutons()
         self.menu()
-
         self.accept('1',lambda : self.ajouterCercle(0))
         self.accept('2',lambda : self.ajouterCercle(1))
         self.accept('3',lambda : self.ajouterCercle(2))
@@ -144,16 +119,24 @@ class MyApp(ShowBase):
         self.accept('t',self.test)
         self.accept('d',self.dechargerGraphismes)
         self.accept('c',self.chargerGraphismes)
+        self.accept('f',self.son.disableaudio)
 
     def Chargerboutons(self):
         self.b4= DirectButton(text =("Settings"),scale=0.2,text_scale=(0.6,0.6), pos = (-0.95,0,0.80),command=self.dechargerjeupouroptions)
         self.b3= DirectButton(text = ("Reset", "click!", "Reset", "disabled"), scale=.18, pos = (0.95,0,0.80), command = self.reset,clickSound=self.resetsound)    #def Volume(self):
-        self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourgraph),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
+        self.b = DirectButton(text = ("Jouer", "Jouer", "Jouer", "disabled"),text_scale=(0.1,0.2),pos=(0,0,0.5),command=(self.dechargermenupourmenu2),clickSound=(self.buttonson),rolloverSound=(self.rollsound))
+        
         self.b2 = DirectButton(text = ("Settings","Settings","Settings"),text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenupouroptions)
+        self.b5 = DirectButton(text= ("IA Facile"), text_scale=(0.1,0.2),pos=(0,0,0.75),command=self.dechargermenu2pourgraph)
+        self.b6 = DirectButton(text= ("IA Intermediaire"), text_scale=(0.1,0.2),pos=(0,0,0),command=self.dechargermenu2pourgraph)
+        self.b7 = DirectButton(text= ("IA Difficile"), text_scale=(0.1,0.2),pos=(0,0,-0.75),command=self.dechargermenu2pourgraph)
         self.b.hide()
+        self.b5.hide()
         self.b2.hide()
         self.b3.hide()
         self.b4.hide()
+        self.b6.hide()
+        self.b7.hide()
     def chargerGraphismes(self):
         for i in range(9):#création des 9 tours
             self.tours[i] = self.loader.loadModel("bois")
@@ -161,8 +144,8 @@ class MyApp(ShowBase):
             self.tours[i].setScale(0.25, 0.25, 0.25) #Echelle
             self.tours[i].setColor(MARRON)
             self.tours[i].setPos(position(i))
-            self.Musiquegame.play()
-            self.Musiquemenu.stop()
+            self.son.Musiquegame.play()
+            self.son.Musiquemenu.stop()
             self.b3.show()
             self.b4.show()
 
@@ -181,8 +164,8 @@ class MyApp(ShowBase):
                 self.environ[i].detachNode()
             self.tableau[i//3][i%3] = 0
         self.tourBlanc = True
-        self.Musiquegame.play()
-        self.Musiquewin.stop()
+        self.son.Musiquegame.play()
+        self.son.Musiquewin.stop()
 
     def mouvementPossible(self, table):
         temp = []
@@ -205,34 +188,44 @@ class MyApp(ShowBase):
                     self.tableau[i//3][i%3] = 10
                 self.environ[i].setPos(position(i))
                 self.tourBlanc = not self.tourBlanc
+            self.testVictoire(self.tableau)
 
     def test(self):
         if 0 in chain.from_iterable(self.tableau):
             self.ajouterCercle(self.IA.meilleurMouvement(self.tableau, self.tourBlanc))
-            self.Musiquegame.play()
-            self.Musiquewin.stop()
+            self.son.Musiquegame.play()
+            self.son.Musiquewin.stop()
 
 
     def menu(self):
         self.b.show()
         self.b2.show()
-        self.Musiquemenu.play()
-        self.Musiquegame.stop()
-        self.Musiquewin.stop()
-    def dechargermenupourgraph(self):
+        self.son.LancerMusiquemenu()
+        self.son.Musiquegame.stop()
+        self.son.Musiquewin.stop()
+
+    def dechargermenupourmenu2(self):
         self.b.hide()
         self.b2.hide()
-        self.chargerGraphismes()
-        self.Musiquemenu.stop()
+        self.menu2()
+
     def dechargermenupouroptions(self):
         self.b.hide()
         self.b2.hide()
         self.Option()
-        self.Musiquemenu.stop()
+        self.son.Musiquemenu.stop()
+
+    def dechargermenu2pourgraph(self):
+    	self.b5.hide()
+    	self.b6.hide()
+    	self.b7.hide()
+    	self.chargerGraphismes()
+    	self.son.Musiquemenu.stop()
 
     def dechargerjeupouroptions(self):
         self.dechargerGraphismes()
         self.Option()
+        self.son.Musiquegame.stop()
 
     def dechargeroptionspourjeu(self):
         self.dechargeroptions()
@@ -241,18 +234,82 @@ class MyApp(ShowBase):
     def dechargeroptionspourmenu(self):
         self.dechargeroptions()
         self.menu()
+
     def dechargeroptions(self):
         self.slider.hide()
         self.labelvolume.hide()
         self.retourjeu.hide()
         self.retourmenu.hide()
+        self.disablesfx.hide()
+
+    def showValue(self):
+    	print (self.slider['value'])
+    	self.son.Actualiserson(self.slider['value'])
+    def chargersfx(self):
+		self.buttonson=self.loader.loadSfx("playbutton.mp3")
+		self.rollsound=self.loader.loadSfx("rollbutton.mp3")
+		self.resetsound=self.loader.loadSfx("resetbutton.mp3")
+
+    def disablefx(self,status):
+		if status == True:
+			self.buttonson.setVolume(0) 
+			self.rollsound.setVolume(0)
+			self.resetsound.setVolume(0)
+		else :
+			self.buttonson.setVolume(1) 
+			self.rollsound.setVolume(1)
+			self.resetsound.setVolume(1)
+
     def Option(self):
-        self.slider = DirectSlider(range=(0,1), value=0.5, pageSize=0.5,scale=0.4,pos=(0.65,0,0.75)) #PB 1 FAIRE SORTIR VALEUR DANS OPTION
+        self.slider = DirectSlider(range=(0,1), value=0.5, pageSize=0.5,scale=0.4,pos=(0.65,0,0.75),command=(self.showValue)) #PB 1 FAIRE SORTIR VALEUR DANS OPTION
         self.labelvolume = DirectLabel(text=("Volume"),scale=0.5,pos=(-0.65,0,0.75),text_scale=(0.4,0.6))
-        self.retourjeu= DirectButton(text=("Resume"),scale=0.5,pos=(-0.65,0,0.15),text_scale=(0.4,0.6),command= (self.dechargeroptionspourjeu))
-        self.retourmenu= DirectButton(text=("Menu"),scale=0.5,pos=(0.65,0,0.15),text_scale=(0.4,0.6),command=(self.dechargeroptionspourmenu))
-    def Volumelol(self):
-        print self.slider['value']
+        self.retourjeu= DirectButton(text=("Resume"),scale=0.5,pos=(-0.65,0,-0.90),text_scale=(0.4,0.6),command= (self.dechargeroptionspourjeu))
+        self.retourmenu= DirectButton(text=("Menu"),scale=0.5,pos=(0.65,0,-0.90),text_scale=(0.4,0.6),command=(self.dechargeroptionspourmenu))
+        self.disablesfx=DirectCheckButton(text=("Disable Sound Effects"),text_scale=(0.4,0.6),scale=0.3,pos=(0,0,0.15),command=self.disablefx)
+
+    def menu2(self):
+    	self.b5.show()
+    	self.b6.show()
+    	self.b7.show()
+
+	
+class AudioManager():
+	def __init__(self, loader):
+		self.loader = loader
+		self.Musiquewin = self.loader.loadMusic("Epic_sax_guy_10_hours.wav")
+		self.Musiquegame = self.loader.loadMusic("Elevator_Music.wav")
+		self.Musiquegame.setLoop(True)
+		print("éxécuté")
+		self.Musiquemenu = self.loader.loadMusic("Lugias Song.wav")
+		self.volumeSon = 1
+		self.Musiquemenu.setLoop(True)
+		self.Musiquemenu.play()
+
+	def Arretermusiques(self):
+		self.Musiquewin.stop()
+		self.Musiquegame.stop()
+		self.buttonson.stop()
+		self.rollsound.stop()
+		self.resetsound.stop()
+
+	def LancerMusiquevictoire(self):
+		if self.Musiquewin.status() != self.Musiquewin.PLAYING:
+			self.Musiquewin.play()
+			self.Musiquegame.stop()
+    
+	def LancerMusiquemenu(self):
+		if self.Musiquemenu != self.Musiquemenu.PLAYING:
+			self.Musiquemenu.play()
+
+
+	def disableaudio(self):
+		self.disableAllAudio()
+
+
+	def Actualiserson(self,Volume):
+		self.Musiquegame.setVolume(Volume)
+		self.Musiquewin.setVolume(Volume)
+		self.Musiquemenu.setVolume(Volume)
 
 
 
@@ -260,11 +317,13 @@ class MyApp(ShowBase):
 
 
 
-    #def Audiomanager(self):
-        #self.sfxMgr=self.sfxManagerList[0]
-        #self.musicMgr=self.musicmanager
-        #self.sfxMgr.append()
-        #
+
+
+
+
+
+
+
 
 
 
